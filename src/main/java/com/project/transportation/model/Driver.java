@@ -14,9 +14,6 @@ public class Driver extends Employee {
     @ManyToMany
     private Set<Qualification> qualifications = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Company company;
-
     public Vehicle getVehicle() {
         return vehicle;
     }
@@ -31,15 +28,5 @@ public class Driver extends Employee {
 
     public void setQualifications(Set<Qualification> qualifications) {
         this.qualifications = qualifications;
-    }
-
-    @Override
-    public Company getCompany() {
-        return company;
-    }
-
-    @Override
-    public void setCompany(Company company) {
-        this.company = company;
     }
 }

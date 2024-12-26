@@ -10,6 +10,7 @@ import java.util.Set;
 public class Qualification extends BaseEntity {
     private String name;
     private String description;
+    private int points;
 
     @ManyToMany(mappedBy = "qualifications")
     private Set<Driver> drivers = new HashSet<>();

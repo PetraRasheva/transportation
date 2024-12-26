@@ -113,34 +113,96 @@ public class DriverServiceImpl implements DriverService {
         driverRepository.deleteById(id);
     }
 
-    private void updateDriverQualifications(Driver driver, Set<Integer> qualificationIds) {
-        if (qualificationIds == null || qualificationIds.isEmpty()) {
-            // Clear existing qualifications
-            for (Qualification qualification : driver.getQualifications()) {
-                qualification.getDrivers().remove(driver);
-            }
-            driver.getQualifications().clear();
-            return;
+    @Override
+    public List<DriverDto> getDriversSortedBySalary(boolean ascending) {
+        List<Driver> drivers;
+        if (ascending) {
+            drivers = driverRepository.findAllByOrderBySalaryAsc();
+        } else {
+            drivers = driverRepository.findAllByOrderBySalaryDesc();
         }
+        return drivers.stream()
+                .map(driverMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
-        // Fetch new qualifications
-        Set<Qualification> newQualifications = qualificationIds.stream()
-                .map(id -> qualificationRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Qualification with id " + id + " not found")))
-                .collect(Collectors.toSet());
+    @Override
+    public List<DriverDto> getDriversBySalaryRange(double minSalary, double maxSalary) {
+        List<Driver> drivers = driverRepository.findBySalaryBetween(minSalary, maxSalary);
+        return drivers.stream()
+                .map(driverMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
-        // Remove the driver from old qualifications
+    @Override
+    public List<DriverDto> getDriversSortedByQualificationPoints(boolean ascending) {
+        // Fetch all drivers from the repository (Driver entities)
+        List<Driver> drivers = driverRepository.findAll();
+
+        // Convert Driver entities to DriverDto using the mapper
+        List<DriverDto> driverDtos = drivers.stream()
+                .map(driverMapper::toDto)
+                .toList();
+
+        // Sort the list based on the ascending flag
+        if (ascending) {
+            return driverDtos.stream()
+                    .sorted(DriverDto.byQualificationPointsAscending())
+                    .collect(Collectors.toList());
+        } else {
+            return driverDtos.stream()
+                    .sorted(DriverDto.byQualificationPointsDescending())
+                    .collect(Collectors.toList());
+        }
+    }
+
+    @Override
+    public List<DriverDto> getDriversByQualificationPointsRange(int minPoints, int maxPoints) {
+        // Fetch all drivers from the repository (Driver entities)
+        List<Driver> drivers = driverRepository.findAll();
+
+        // Convert Driver entities to DriverDto using the mapper
+        List<DriverDto> driverDtos = drivers.stream()
+                .map(driverMapper::toDto)
+                .collect(Collectors.toList());
+
+        // Filter the list based on the qualification points range
+        return driverDtos.stream()
+                .filter(driver -> {
+                    int totalPoints = driver.getTotalQualificationPoints();
+                    return totalPoints >= minPoints && totalPoints <= maxPoints;
+                })
+                .collect(Collectors.toList());
+    }
+
+private void updateDriverQualifications(Driver driver, Set<Integer> qualificationIds) {
+    if (qualificationIds == null || qualificationIds.isEmpty()) {
+        // Clear existing qualifications
         for (Qualification qualification : driver.getQualifications()) {
             qualification.getDrivers().remove(driver);
         }
-
-        // Clear current qualifications and set new ones
         driver.getQualifications().clear();
-        driver.getQualifications().addAll(newQualifications);
+        return;
+    }
 
-        // Add the driver to the new qualifications
-        for (Qualification qualification : newQualifications) {
-            qualification.getDrivers().add(driver);
-        }
+    // Fetch new qualifications
+    Set<Qualification> newQualifications = qualificationIds.stream()
+            .map(id -> qualificationRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Qualification with id " + id + " not found")))
+            .collect(Collectors.toSet());
+
+    // Remove the driver from old qualifications
+    for (Qualification qualification : driver.getQualifications()) {
+        qualification.getDrivers().remove(driver);
+    }
+
+    // Clear current qualifications and set new ones
+    driver.getQualifications().clear();
+    driver.getQualifications().addAll(newQualifications);
+
+    // Add the driver to the new qualifications
+    for (Qualification qualification : newQualifications) {
+        qualification.getDrivers().add(driver);
+    }
     }
 }

@@ -6,14 +6,16 @@ public class EmployeeDto {
     private String lastName;
     private String email;
     private Integer companyId;
+    private double salary;
 
     // Constructor
-    public EmployeeDto(Integer id, String firstName, String lastName, String email, Integer companyId) {
+    public EmployeeDto(Integer id, String firstName, String lastName, String email, Integer companyId, double salary) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.companyId = companyId;
+        this.salary = salary;
     }
 
     // Getters and Setters
@@ -35,5 +37,9 @@ public class EmployeeDto {
 
     public Integer getCompanyId() {
         return companyId;
+    }
+
+    public double getSalary() {
+        return salary;
     }
 }

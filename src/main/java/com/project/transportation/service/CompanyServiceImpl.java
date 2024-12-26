@@ -7,6 +7,9 @@ import com.project.transportation.model.Company;
 import com.project.transportation.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
@@ -41,4 +44,25 @@ public class CompanyServiceImpl implements CompanyService {
     public void deleteCompany(Integer id) {
         companyRepository.deleteCompanyById(id);
     }
+
+    public List<CompanyDto> getCompaniesSortedByIncome(boolean ascending) {
+        List<Company> companies;
+        if (ascending) {
+            companies = companyRepository.findAllByOrderByIncomeAsc(); // Ensure this method exists in the repository
+        } else {
+            companies = companyRepository.findAllByOrderByIncomeDesc(); // Ensure this method exists in the repository
+        }
+        return companies.stream()
+                .map(companyMapper::toDto) // Convert each Company to CompanyDto
+                .collect(Collectors.toList());
+    }
+
+    // Get companies filtered by income range
+    public List<CompanyDto> getCompaniesByIncomeRange(double minIncome, double maxIncome) {
+        List<Company> companies = companyRepository.findByIncomeRange(minIncome, maxIncome); // Ensure this method exists
+        return companies.stream()
+                .map(companyMapper::toDto) // Convert each Company to CompanyDto
+                .collect(Collectors.toList());
+    }
+
 }

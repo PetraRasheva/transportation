@@ -8,6 +8,7 @@ import java.util.Set;
 @Entity
 public class Company extends BaseEntity {
     private String name;
+    private double income;
 
     @OneToMany(mappedBy = "company")
     private Set<Employee> employees;
@@ -48,5 +49,13 @@ public class Company extends BaseEntity {
 
     public void setVehicles(Set<Vehicle> vehicles) {
         this.vehicles = vehicles;
+    }
+
+    public double getIncome() {
+        return income;
+    }
+
+    public void setIncome(double income) {
+        this.income = income;
     }
 }

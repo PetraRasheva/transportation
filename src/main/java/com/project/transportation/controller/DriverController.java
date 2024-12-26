@@ -47,4 +47,24 @@ public class DriverController {
         driverService.deleteDriver(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/sortedBySalary")
+    public List<DriverDto> getDriversSortedBySalary(@RequestParam(defaultValue = "true") boolean ascending) {
+        return driverService.getDriversSortedBySalary(ascending);
+    }
+
+    @GetMapping("/filterBySalaryRange")
+    public List<DriverDto> getDriversBySalaryRange(@RequestParam double minSalary, @RequestParam double maxSalary) {
+        return driverService.getDriversBySalaryRange(minSalary, maxSalary);
+    }
+
+    @GetMapping("/sortedByQualificationPoints")
+    public List<DriverDto> getDriversSortedByQualificationPoints(@RequestParam(defaultValue = "true") boolean ascending) {
+        return driverService.getDriversSortedByQualificationPoints(ascending);
+    }
+
+    @GetMapping("/filterByQualificationPointsRange")
+    public List<DriverDto> getDriversByQualificationPointsRange(@RequestParam int minPoints, @RequestParam int maxPoints) {
+        return driverService.getDriversByQualificationPointsRange(minPoints, maxPoints);
+    }
 }

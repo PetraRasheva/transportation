@@ -14,4 +14,12 @@ public interface DriverService {
     List<DriverDto> getAllDrivers();
 
     void deleteDriver(Integer id);
+
+    List<DriverDto> getDriversSortedBySalary(boolean ascending);
+
+    List<DriverDto> getDriversBySalaryRange(double minSalary, double maxSalary);
+
+    List<DriverDto> getDriversSortedByQualificationPoints(boolean ascending);
+
+    List<DriverDto> getDriversByQualificationPointsRange(int minPoints, int maxPoints);
 }

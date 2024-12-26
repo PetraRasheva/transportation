@@ -8,9 +8,8 @@ import org.mapstruct.MappingTarget;
 import org.springframework.context.annotation.Primary;
 
 @Mapper(componentModel = "spring")
-@Primary
 public interface EmployeeMapper {
-    // Mapping common Employee fields to EmployeeDto
+    @Mapping(target = "companyId", source = "company.id")
     EmployeeDto toDto(Employee employee);
 
     // Update Employee entity from EmployeeDto (ignoring company field)

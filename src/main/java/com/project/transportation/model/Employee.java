@@ -8,6 +8,7 @@ public abstract class Employee extends BaseEntity {
     private String firstName;
     private String lastName;
     private String email;
+    private double salary;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
@@ -51,5 +52,13 @@ public abstract class Employee extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 }
