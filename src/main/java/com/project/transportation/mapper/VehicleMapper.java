@@ -8,6 +8,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface VehicleMapper {
+    @Mapping(source = "company.id", target = "companyId")
     VehicleDto toDto(Vehicle vehicle);
     Vehicle toEntity(VehicleDto vehicleDto);
     @Mapping(target = "id", ignore = true) // Prevent overwriting ID

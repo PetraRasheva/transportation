@@ -1,8 +1,6 @@
 package com.project.transportation.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -12,10 +10,13 @@ public class Transportation extends BaseEntity {
     private String endDestination;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private TransportationType transportationType;
     private double price;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "transportable_id")
+    private Transportable transportable;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 
@@ -35,8 +36,12 @@ public class Transportation extends BaseEntity {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPrice() {
+        if (transportable != null) {
+            this.price = transportable.calculatePrice();
+        } else {
+            throw new IllegalStateException("Transportable object is required to calculate price.");
+        }
     }
 
     public void setStartDestination(String startDestination) {
@@ -67,11 +72,16 @@ public class Transportation extends BaseEntity {
         this.endDate = endDate;
     }
 
-    public TransportationType getTransportationType() {
-        return transportationType;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public void setTransportationType(TransportationType transportationType) {
-        this.transportationType = transportationType;
+    public Transportable getTransportable() {
+        return transportable;
+    }
+
+    public void setTransportable(Transportable transportable) {
+        this.transportable = transportable;
     }
 }
+

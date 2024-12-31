@@ -1,9 +1,12 @@
 package com.project.transportation.service;
 
 import com.project.transportation.dto.VehicleDto;
+import com.project.transportation.exception.CompanyNotFoundException;
 import com.project.transportation.exception.VehicleNotFoundException;
 import com.project.transportation.mapper.VehicleMapper;
+import com.project.transportation.model.Company;
 import com.project.transportation.model.Vehicle;
+import com.project.transportation.repository.CompanyRepository;
 import com.project.transportation.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +18,29 @@ public class VehicleServiceImpl implements VehicleService {
     
     private final VehicleRepository vehicleRepository;
     private final VehicleMapper vehicleMapper;
+    private final CompanyRepository companyRepository;
     
-    public VehicleServiceImpl(VehicleRepository vehicleRepository, VehicleMapper vehicleMapper) {
+    public VehicleServiceImpl(VehicleRepository vehicleRepository, VehicleMapper vehicleMapper, CompanyRepository companyRepository) {
         this.vehicleRepository = vehicleRepository;
         this.vehicleMapper = vehicleMapper;
+        this.companyRepository = companyRepository;
     }
     @Override
     public VehicleDto addVehicle(VehicleDto vehicleDto) {
+        Company company = companyRepository.findById(vehicleDto.companyId())
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+
+        // Convert VehicleDto to Vehicle entity
         Vehicle vehicle = vehicleMapper.toEntity(vehicleDto);
-        Vehicle savedVehicle = vehicleRepository.save(vehicle);
-        return vehicleMapper.toDto(savedVehicle);
+
+        // Set the company to the vehicle
+        vehicle.setCompany(company);
+
+        // Save the vehicle entity
+        vehicle = vehicleRepository.save(vehicle);
+
+        // Return the saved vehicle as DTO
+        return vehicleMapper.toDto(vehicle);
     }
 
     @Override

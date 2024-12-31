@@ -1,14 +1,17 @@
 package com.project.transportation.controller;
 
+import com.project.transportation.dto.CreateTransportationDto;
 import com.project.transportation.dto.TransportationDto;
 import com.project.transportation.service.TransportationService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/transportation")
-
 public class TransportationController {
 
     private final TransportationService transportationService;
@@ -24,7 +27,7 @@ public class TransportationController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<TransportationDto> addTransportation(@RequestBody TransportationDto transportation) {
+    public ResponseEntity<TransportationDto> addTransportation(@RequestBody CreateTransportationDto transportation) {
         TransportationDto newTransportation = transportationService.addTransportation(transportation);
         return new ResponseEntity<>(newTransportation, HttpStatus.CREATED);
     }
@@ -39,5 +42,16 @@ public class TransportationController {
     public ResponseEntity<?> deleteTransportation(@PathVariable("id") Integer id) {
         transportationService.deleteTransportation(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/sortByEndDestination")
+    public List<TransportationDto> getTransportationsSortedByEndDestination(
+            @RequestParam(defaultValue = "true") boolean ascending) {
+        return transportationService.getTransportationsSortedByEndDestination(ascending);
+    }
+
+    @GetMapping("/filterByEndDestination")
+    public List<TransportationDto> getTransportationsByEndDestination(@RequestParam String endDestination) {
+        return transportationService.getTransportationsByEndDestination(endDestination);
     }
 }

@@ -10,7 +10,7 @@ public abstract class Employee extends BaseEntity {
     private String email;
     private double salary;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 

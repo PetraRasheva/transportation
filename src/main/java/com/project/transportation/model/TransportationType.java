@@ -1,5 +1,5 @@
-package com.project.transportation.model;
-
-public enum TransportationType {
-    ITEMS,PASSENGERS
-}
+//package com.project.transportation.model;
+//
+//public enum TransportationType {
+//    ITEMS,PASSENGERS
+//}

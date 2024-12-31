@@ -12,9 +12,6 @@ public class Qualification extends BaseEntity {
     private String description;
     private int points;
 
-    @ManyToMany(mappedBy = "qualifications")
-    private Set<Driver> drivers = new HashSet<>();
-
     // Getters and setters
     public String getName() {
         return name;
@@ -32,11 +29,11 @@ public class Qualification extends BaseEntity {
         this.description = description;
     }
 
-    public Set<Driver> getDrivers() {
-        return drivers;
+    public int getPoints() {
+        return points;
     }
 
-    public void setDrivers(Set<Driver> drivers) {
-        this.drivers = drivers;
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

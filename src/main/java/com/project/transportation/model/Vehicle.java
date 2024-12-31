@@ -1,9 +1,6 @@
 package com.project.transportation.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Vehicle extends BaseEntity {
@@ -11,7 +8,7 @@ public class Vehicle extends BaseEntity {
     @Enumerated(EnumType.STRING)
    private VehicleType vehicleType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
 
     public Company getCompany() {
