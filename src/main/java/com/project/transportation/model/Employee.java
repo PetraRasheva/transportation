@@ -5,8 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Employee extends BaseEntity {
-    private String firstName;
-    private String lastName;
+    private String name;
     private String email;
     private double salary;
 
@@ -24,26 +23,17 @@ public abstract class Employee extends BaseEntity {
 
     public Employee() {}
 
-    public Employee(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Employee(String name, String lastName, String email) {
+        this.name = name;
         this.email = email;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String firstName) {
+        this.name = firstName;
     }
 
     public String getEmail() {

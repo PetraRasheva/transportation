@@ -8,7 +8,10 @@ public record CreateTransportationDto(
         @NotBlank String startDestination,
         @NotBlank String endDestination,
         LocalDateTime startDate,
-        Integer companyId,
-        Integer transportableId
+        @NotBlank Integer companyId,
+        @NotBlank Integer transportableId,
+        @NotBlank Integer clientId,
+        @NotBlank Integer driverId,
+        @NotBlank boolean isPaid
 ) {
 }

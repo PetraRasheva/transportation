@@ -1,16 +1,22 @@
 package com.project.transportation.dto;
 
-public sealed interface TransportableDto permits GoodsDto, PassengersDto {
- /*
- The sealed keyword in Java allows you to define a class or interface whose subclasses are restricted to a specific set of types.
- This ensures that the class hierarchy is controlled and that you can clearly specify which classes are allowed to extend or implement the sealed
- class or interface.
-In your case, the sealed keyword is applied to the TransportableDto interface to prevent other classes from arbitrarily implementing it.
-Only the classes you explicitly list with the permits clause can implement TransportableDto. This makes the design safer by ensuring that no
-other types can implement the interface unless you allow it.
-The permits clause defines the specific classes that are allowed to implement or extend the sealed class or interface.
-In your case, you are saying that only GoodsDto and PassengersDto are allowed to implement the TransportableDto interface.
-Without the permits clause, any class could potentially implement the TransportableDto interface, which would defeat the purpose of restricting
-the hierarchy.
-  */
+public abstract class TransportableDto {
+    private String name;
+
+    public TransportableDto() {
+        // Default constructor for frameworks like Jackson
+    }
+
+    public TransportableDto(String name) {
+        this.name = name;
+    }
+
+    // Getter and Setter
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

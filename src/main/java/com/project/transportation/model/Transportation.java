@@ -2,15 +2,17 @@ package com.project.transportation.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-public class Transportation extends BaseEntity {
+public class Transportation extends BaseEntity implements Serializable {
     private String startDestination;
     private String endDestination;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private double price;
+    private boolean isPaid;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "transportable_id")
@@ -19,6 +21,14 @@ public class Transportation extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
+    private Client client;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "driver_id")
+    private Driver driver;
 
     public Company getCompany() {
         return company;
@@ -42,6 +52,22 @@ public class Transportation extends BaseEntity {
         } else {
             throw new IllegalStateException("Transportable object is required to calculate price.");
         }
+    }
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean isPaid) {
+        this.isPaid = isPaid;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
     }
 
     public void setStartDestination(String startDestination) {
@@ -82,6 +108,28 @@ public class Transportation extends BaseEntity {
 
     public void setTransportable(Transportable transportable) {
         this.transportable = transportable;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    @Override
+    public String toString() {
+        return "Transportation {" +
+                "\n ID: " + getId() +
+                ",\n Start Destination: " + startDestination +
+                ",\n End Destination: " + endDestination +
+                ",\n Start Date: " + startDate +
+                ",\n End Date: " + (endDate != null ? endDate : "Not delivered") +
+                ",\n Price: " + price +
+                ",\n Transportable: " + (transportable != null ? transportable.toString() : "None") +
+                ",\n Company: " + (company != null ? company.getName() : "None") +
+                '}';
     }
 }
 

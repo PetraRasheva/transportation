@@ -2,6 +2,8 @@ package com.project.transportation.model;
 
 import jakarta.persistence.Entity;
 
+import java.io.Serializable;
+
 @Entity
 public class Goods extends Transportable {
     private double weight;
@@ -16,7 +18,6 @@ public class Goods extends Transportable {
     public Goods() {
         super();
     }
-
 
     public double getWeight() {
         return weight;
@@ -37,5 +38,13 @@ public class Goods extends Transportable {
     @Override
     public double calculatePrice() {
         return weight * pricePerKg;
+    }
+
+    @Override
+    public String toString() {
+        return "Goods { Name: " + getName() +
+                ", Weight: " + weight +
+                ", Price Per Kg: " + pricePerKg +
+                " }";
     }
 }

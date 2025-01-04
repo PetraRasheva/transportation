@@ -21,12 +21,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final DriverService driverService;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, @Qualifier("employeeMapperImpl") EmployeeMapper employeeMapper, CompanyRepository companyRepository, DriverService driverService) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, @Qualifier("employeeMapperImpl") EmployeeMapper employeeMapper, DriverService driverService) {
         this.employeeRepository = employeeRepository;        
         this.employeeMapper = employeeMapper;
         this.driverService = driverService;
     }
 
+    @Override
     public EmployeeDto addEmployee(EmployeeDto employeeDto) {
 
         if (employeeDto instanceof DriverDto driverDto) {

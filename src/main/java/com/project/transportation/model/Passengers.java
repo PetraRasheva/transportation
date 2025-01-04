@@ -1,9 +1,8 @@
 package com.project.transportation.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import java.io.Serializable;
 
 @Entity
 public class Passengers extends Transportable {
@@ -39,5 +38,13 @@ public class Passengers extends Transportable {
     @Override
     public double calculatePrice() {
         return count * baseFare;
+    }
+
+    @Override
+    public String toString() {
+        return "Passengers { Name: " + getName() +
+                ", Count: " + count +
+                ", Base Fare: " + baseFare +
+                " }";
     }
 }

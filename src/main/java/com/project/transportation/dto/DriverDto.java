@@ -10,8 +10,8 @@ public class DriverDto extends EmployeeDto {
     private Set<Integer> qualificationIds;
     private int totalQualificationPoints;  // Add a field for storing total points
 
-    public DriverDto(Integer id, String firstName, String lastName, String email, Integer companyId, Integer vehicleId, Set<Integer> qualifications, double salary) {
-        super(id, firstName, lastName, email, companyId, salary);
+    public DriverDto(Integer id, String name, String email, Integer companyId, Integer vehicleId, Set<Integer> qualifications, double salary) {
+        super(id, name, email, companyId, salary);
         this.vehicleId = vehicleId;
         this.qualificationIds = qualifications != null ? qualifications : new HashSet<>(); // Prevent null qualifications
         this.totalQualificationPoints = calculateTotalQualificationPoints();  // Initialize total points

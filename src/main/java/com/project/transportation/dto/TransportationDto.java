@@ -1,16 +1,19 @@
 package com.project.transportation.dto;
 
-import com.project.transportation.model.Transportable;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
 public record TransportationDto(
-        Integer id,
-        String startDestination,
-        String endDestination,
-        LocalDateTime startDate,
+        @NotBlank Integer id,
+        @NotBlank String startDestination,
+        @NotBlank String endDestination,
+        @NotBlank LocalDateTime startDate,
         LocalDateTime endDate,
-        Integer companyId,
-        Integer transportableId,
-        Double price
+        @NotBlank Integer companyId,
+        @NotBlank Integer transportableId,
+        @NotBlank Integer clientId,
+        @NotBlank Integer driverId,
+        @NotBlank Double price,
+        @NotBlank boolean isPaid
 ) {}

@@ -15,6 +15,9 @@ public class Driver extends Employee {
     @ManyToMany
     private Set<Qualification> qualifications = new HashSet<>();
 
+    @OneToMany(mappedBy = "driver")
+    private Set<Transportation> transportations;
+
     public Vehicle getVehicle() {
         return vehicle;
     }
@@ -41,5 +44,13 @@ public class Driver extends Employee {
 
     public void setTotalQualificationPoints(int totalQualificationPoints) {
         this.totalQualificationPoints = totalQualificationPoints;
+    }
+
+    public Set<Transportation> getTransportations() {
+        return transportations;
+    }
+
+    public void setTransportations(Set<Transportation> transportations) {
+        this.transportations = transportations;
     }
 }

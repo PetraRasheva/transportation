@@ -2,6 +2,7 @@ package com.project.transportation.service;
 
 import com.project.transportation.cache.QualificationCache;
 import com.project.transportation.dto.DriverDto;
+import com.project.transportation.dto.DriverWithCountDto;
 import com.project.transportation.exception.CompanyNotFoundException;
 import com.project.transportation.exception.DriverNotFoundException;
 import com.project.transportation.exception.QualificationNotFoundException;
@@ -113,11 +114,16 @@ public class DriverServiceImpl implements DriverService {
         return driverMapper.toDto(updatedDriver);
     }
 
-    @Override
-    public List<DriverDto> getAllDrivers() {
+    public List<DriverWithCountDto> getAllDriversWithTransportationCount() {
         List<Driver> drivers = driverRepository.findAll();
+
+        // Map the list of drivers to a list of DriverWithCountDto
         return drivers.stream()
-                .map(driverMapper::toDto)
+                .map(driver -> new DriverWithCountDto(
+                        driver.getId(),
+                        driver.getName(),
+                        driver.getTransportations().size() // Calculate size of transportations set
+                ))
                 .collect(Collectors.toList());
     }
 

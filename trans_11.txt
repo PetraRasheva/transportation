@@ -1,0 +1,9 @@
+Transportation {
+ ID: 11,
+ Start Destination: Boston,
+ End Destination: New York,
+ Start Date: 2024-12-30T08:00,
+ End Date: Not delivered,
+ Price: 450.0,
+ Transportable: Passengers { Name: Group A, Count: 30, Base Fare: 15.0 },
+ Company: Speedy}

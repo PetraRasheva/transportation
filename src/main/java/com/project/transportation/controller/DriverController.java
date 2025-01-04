@@ -1,6 +1,7 @@
 package com.project.transportation.controller;
 
 import com.project.transportation.dto.DriverDto;
+import com.project.transportation.dto.DriverWithCountDto;
 import com.project.transportation.service.DriverService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +37,6 @@ public class DriverController {
         return new ResponseEntity<>(updatedDriver, HttpStatus.OK);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<DriverDto>> getAllDrivers() {
-        List<DriverDto> drivers = driverService.getAllDrivers();
-        return new ResponseEntity<>(drivers, HttpStatus.OK);
-    }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteDriver(@PathVariable("id") Integer id) {
         driverService.deleteDriver(id);
@@ -66,5 +61,11 @@ public class DriverController {
     @GetMapping("/filterByQualificationPointsRange")
     public List<DriverDto> getDriversByQualificationPointsRange(@RequestParam int minPoints, @RequestParam int maxPoints) {
         return driverService.getDriversByQualificationPointsRange(minPoints, maxPoints);
+    }
+
+    @GetMapping("/withTransportationCount")
+    public ResponseEntity<List<DriverWithCountDto>> getAllDriversWithTransportationCount() {
+        List<DriverWithCountDto> drivers = driverService.getAllDriversWithTransportationCount();
+        return ResponseEntity.ok(drivers);
     }
 }

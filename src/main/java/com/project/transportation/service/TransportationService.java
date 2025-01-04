@@ -17,4 +17,10 @@ public interface TransportationService {
     List<TransportationDto> getTransportationsSortedByEndDestination(boolean ascending);
 
     List<TransportationDto> getTransportationsByEndDestination(String endDestination);
+
+    void saveTransportationToFile(Integer id);
+
+    double getTotalPrice();
+
+    long getTotalTransportationCount();
 }

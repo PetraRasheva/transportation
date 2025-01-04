@@ -3,7 +3,6 @@ package com.project.transportation.controller;
 import com.project.transportation.dto.CreateTransportationDto;
 import com.project.transportation.dto.TransportationDto;
 import com.project.transportation.service.TransportationService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,5 +52,28 @@ public class TransportationController {
     @GetMapping("/filterByEndDestination")
     public List<TransportationDto> getTransportationsByEndDestination(@RequestParam String endDestination) {
         return transportationService.getTransportationsByEndDestination(endDestination);
+    }
+
+    @PostMapping("/save/{id}")
+    public ResponseEntity<String> saveTransportationToFile(@PathVariable("id") Integer id) {
+        try {
+            transportationService.saveTransportationToFile(id);
+            return new ResponseEntity<>("Transportation saved to file successfully.", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to save transportation to file: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getTotalTransportationCount() {
+        long count = transportationService.getTotalTransportationCount();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/totalPrice")
+    public ResponseEntity<Double> getTotalPrice() {
+        Double totalPrice = transportationService.getTotalPrice();
+        return ResponseEntity.ok(totalPrice);
     }
 }

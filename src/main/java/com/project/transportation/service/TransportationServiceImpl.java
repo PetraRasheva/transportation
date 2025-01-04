@@ -11,6 +11,7 @@ import com.project.transportation.model.Transportation;
 import com.project.transportation.repository.CompanyRepository;
 import com.project.transportation.repository.TransportableRepository;
 import com.project.transportation.repository.TransportationRepository;
+import com.project.transportation.utils.FileUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,8 @@ public class TransportationServiceImpl implements TransportationService {
     private final CompanyRepository companyRepository;
     private final TransportationMapper transportationMapper;
     private final TransportableRepository transportableRepository;
+
+    private final String FILE_NAME = "transportations.ser"; // File to store serialized objects
 
     public TransportationServiceImpl(TransportationRepository transportationRepository, TransportationMapper transportationMapper, CompanyRepository companyRepository, TransportableRepository transportableRepository) {
         this.transportationRepository = transportationRepository;
@@ -41,11 +44,12 @@ public class TransportationServiceImpl implements TransportationService {
        Transportable transportable = transportableRepository.findById(transportationDto.transportableId())
                .orElseThrow(() -> new TransportationNotFoundException("Transportable with id " + transportationDto.transportableId() + " was not found"));
 
-       //transportation.setTransportable
         transportation.setTransportable(transportable);
         transportation.setPrice();
+        //transportation.setPaid(transportationDto.isPaid());
 
-       Transportation savedTransportation = transportationRepository.save(transportation);
+        Transportation savedTransportation = transportationRepository.save(transportation);
+
        return transportationMapper.toDto(savedTransportation);
     }
 
@@ -62,7 +66,8 @@ public class TransportationServiceImpl implements TransportationService {
 
     @Override
     public TransportationDto getTransportationById(Integer id) {
-        return null;
+        Transportation transportation = transportationRepository.findTransportationById(id).orElseThrow(() -> new TransportationNotFoundException("Transportation with id " + id + " was not found"));
+        return transportationMapper.toDto(transportation);
     }
 
     @Override
@@ -95,6 +100,29 @@ public class TransportationServiceImpl implements TransportationService {
         return transportations.stream()
                 .map(transportationMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void saveTransportationToFile(Integer id) {
+        // Fetch the Transportation object
+        Transportation transportation = transportationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Transportation not found with ID: " + id));
+
+        // Generate the filename based on the ID
+        String filename = "trans_" + transportation.getId() + ".txt";
+
+        // Save to file using utility
+        FileUtils.writeToFile(transportation.toString(), filename);
+    }
+
+    @Override
+    public double getTotalPrice() {
+        return transportationRepository.getTotalPriceOfAllTransportations();
+    }
+
+    @Override
+    public long getTotalTransportationCount() {
+        return transportationRepository.count();  // Get the count of all transportations
     }
 
     private double calculateDistance(TransportationDto transportationDto) {

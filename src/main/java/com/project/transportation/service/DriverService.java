@@ -1,6 +1,7 @@
 package com.project.transportation.service;
 
 import com.project.transportation.dto.DriverDto;
+import com.project.transportation.dto.DriverWithCountDto;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface DriverService {
 
     DriverDto updateDriver(DriverDto driverDto);
 
-    List<DriverDto> getAllDrivers();
+    List<DriverWithCountDto> getAllDriversWithTransportationCount();
 
     void deleteDriver(Integer id);
 
