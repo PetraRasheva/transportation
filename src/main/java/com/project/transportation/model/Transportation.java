@@ -14,8 +14,7 @@ public class Transportation extends BaseEntity implements Serializable {
     private double price;
     private boolean isPaid;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "transportable_id")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Transportable transportable;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,7 +26,7 @@ public class Transportation extends BaseEntity implements Serializable {
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "driver_id")
+    @JoinColumn(name = "driver_id", nullable = true)
     private Driver driver;
 
     public Company getCompany() {
@@ -58,8 +57,8 @@ public class Transportation extends BaseEntity implements Serializable {
         return isPaid;
     }
 
-    public void setPaid(boolean isPaid) {
-        this.isPaid = isPaid;
+    public void setPaid(boolean paid) {
+        this.isPaid = paid;
     }
 
     public Driver getDriver() {

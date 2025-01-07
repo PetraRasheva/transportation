@@ -6,14 +6,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DriverDto extends EmployeeDto {
-    private Integer vehicleId;
+    private final Integer vehicleId;
     private Set<Integer> qualificationIds;
-    private int totalQualificationPoints;  // Add a field for storing total points
+    private int totalQualificationPoints;
 
     public DriverDto(Integer id, String name, String email, Integer companyId, Integer vehicleId, Set<Integer> qualifications, double salary) {
         super(id, name, email, companyId, salary);
         this.vehicleId = vehicleId;
-        this.qualificationIds = qualifications != null ? qualifications : new HashSet<>(); // Prevent null qualifications
+        this.qualificationIds = qualifications != null ? qualifications : new HashSet<>();
         this.totalQualificationPoints = calculateTotalQualificationPoints();  // Initialize total points
     }
 
@@ -23,10 +23,6 @@ public class DriverDto extends EmployeeDto {
 
     public Set<Integer> getQualificationIds() {
         return qualificationIds;
-    }
-
-    public void setVehicleId(Integer vehicleId) {
-        this.vehicleId = vehicleId;
     }
 
     public void setTotalQualificationPoints(int totalQualificationPoints) {
@@ -42,9 +38,8 @@ public class DriverDto extends EmployeeDto {
         return totalQualificationPoints;
     }
 
-    // Calculate the total qualification points (assuming qualifications are stored as integers)
+    // Calculate the total qualification points
     private int calculateTotalQualificationPoints() {
-        // Calculate the total qualification points using the qualificationIds
         return qualificationIds.stream().mapToInt(QualificationCache::getQualificationPoints).sum();
     }
 }

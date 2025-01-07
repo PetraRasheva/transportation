@@ -43,15 +43,15 @@ public class TransportationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/sortByEndDestination")
+    @GetMapping("/sort-by-end-destination")
     public List<TransportationDto> getTransportationsSortedByEndDestination(
             @RequestParam(defaultValue = "true") boolean ascending) {
         return transportationService.getTransportationsSortedByEndDestination(ascending);
     }
 
-    @GetMapping("/filterByEndDestination")
-    public List<TransportationDto> getTransportationsByEndDestination(@RequestParam String endDestination) {
-        return transportationService.getTransportationsByEndDestination(endDestination);
+    @GetMapping("/filter-by-end-destination")
+    public List<TransportationDto> getTransportationsByEndDestination(@RequestParam String dest) {
+        return transportationService.getTransportationsByEndDestination(dest);
     }
 
     @PostMapping("/save/{id}")
@@ -71,9 +71,9 @@ public class TransportationController {
         return ResponseEntity.ok(count);
     }
 
-    @GetMapping("/totalPrice")
-    public ResponseEntity<Double> getTotalPrice() {
-        Double totalPrice = transportationService.getTotalPrice();
+    @GetMapping("/total-income")
+    public ResponseEntity<Double> getTotalIncome() {
+        Double totalPrice = transportationService.getTotalIncome();
         return ResponseEntity.ok(totalPrice);
     }
 }

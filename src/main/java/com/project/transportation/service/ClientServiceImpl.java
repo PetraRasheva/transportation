@@ -8,6 +8,9 @@ import com.project.transportation.repository.ClientRepository;
 import com.project.transportation.repository.TransportationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ClientServiceImpl implements ClientService {
     public final ClientRepository clientRepository;
@@ -52,10 +55,10 @@ public class ClientServiceImpl implements ClientService {
         return transportationRepository.hasUnpaidTransportations(clientId);
     }
 
-//    @Override
-//    public List<ClientDto> getAllClients() {
-//        return clientRepository.findAll().stream()
-//                .map(clientMapper::toDto)
-//                .collect(Collectors.toList());
-//    }
+    @Override
+    public List<ClientDto> getAllClients() {
+        return clientRepository.findAll().stream()
+                .map(clientMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

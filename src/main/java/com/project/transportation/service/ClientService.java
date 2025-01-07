@@ -11,7 +11,7 @@ public interface ClientService {
 
     ClientDto updateClient(ClientDto client);
 
-   // List<ClientDto> getAllClients();
+    List<ClientDto> getAllClients();
 
     void deleteClient(Integer id);
 

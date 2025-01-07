@@ -1,9 +1,9 @@
 Transportation {
- ID: 11,
+ ID: 8,
  Start Destination: Boston,
  End Destination: New York,
  Start Date: 2024-12-30T08:00,
  End Date: Not delivered,
- Price: 450.0,
- Transportable: Passengers { Name: Group A, Count: 30, Base Fare: 15.0 },
+ Price: 2010.0,
+ Transportable: Goods { Name: Product F, Weight: 100.5, Price Per Kg: 20.0 },
  Company: Speedy}

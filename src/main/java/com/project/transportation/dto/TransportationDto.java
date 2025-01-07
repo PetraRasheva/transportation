@@ -11,7 +11,7 @@ public record TransportationDto(
         @NotBlank LocalDateTime startDate,
         LocalDateTime endDate,
         @NotBlank Integer companyId,
-        @NotBlank Integer transportableId,
+        TransportableDto transportableDto,
         @NotBlank Integer clientId,
         @NotBlank Integer driverId,
         @NotBlank Double price,

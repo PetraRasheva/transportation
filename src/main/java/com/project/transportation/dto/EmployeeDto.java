@@ -1,16 +1,15 @@
 package com.project.transportation.dto;
 
 public class EmployeeDto {
-    private Integer id;
-    private String name;
-    private String email;
-    private Integer companyId;
-    private double salary;
+    private final Integer id;
+    private final String name;
+    private final String email;
+    private final Integer companyId;
+    private final double salary;
 
-    // Constructor
-    public EmployeeDto(Integer id, String firstName, String email, Integer companyId, double salary) {
+    public EmployeeDto(Integer id, String name, String email, Integer companyId, double salary) {
         this.id = id;
-        this.name = firstName;
+        this.name = name;
         this.email = email;
         this.companyId = companyId;
         this.salary = salary;

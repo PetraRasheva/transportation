@@ -20,7 +20,7 @@ public interface TransportationService {
 
     void saveTransportationToFile(Integer id);
 
-    double getTotalPrice();
+    double getTotalIncome();
 
     long getTotalTransportationCount();
 }

@@ -1,7 +1,7 @@
 package com.project.transportation.controller;
 
 import com.project.transportation.dto.DriverDto;
-import com.project.transportation.dto.DriverWithCountDto;
+import com.project.transportation.dto.DriverWithInfoDto;
 import com.project.transportation.service.DriverService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,29 +43,29 @@ public class DriverController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/sortedBySalary")
+    @GetMapping("/sorted-by-salary")
     public List<DriverDto> getDriversSortedBySalary(@RequestParam(defaultValue = "true") boolean ascending) {
         return driverService.getDriversSortedBySalary(ascending);
     }
 
-    @GetMapping("/filterBySalaryRange")
-    public List<DriverDto> getDriversBySalaryRange(@RequestParam double minSalary, @RequestParam double maxSalary) {
-        return driverService.getDriversBySalaryRange(minSalary, maxSalary);
+    @GetMapping("/filter-by-salary-range")
+    public List<DriverDto> getDriversBySalaryRange(@RequestParam double min, @RequestParam double max) {
+        return driverService.getDriversBySalaryRange(min, max);
     }
 
-    @GetMapping("/sortedByQualificationPoints")
+    @GetMapping("/sorted-by-qualification-points")
     public List<DriverDto> getDriversSortedByQualificationPoints(@RequestParam(defaultValue = "true") boolean ascending) {
         return driverService.getDriversSortedByQualificationPoints(ascending);
     }
 
-    @GetMapping("/filterByQualificationPointsRange")
-    public List<DriverDto> getDriversByQualificationPointsRange(@RequestParam int minPoints, @RequestParam int maxPoints) {
-        return driverService.getDriversByQualificationPointsRange(minPoints, maxPoints);
+    @GetMapping("/filter-by-qualification-points-range")
+    public List<DriverDto> getDriversByQualificationPointsRange(@RequestParam int min, @RequestParam int max) {
+        return driverService.getDriversByQualificationPointsRange(min, max);
     }
 
-    @GetMapping("/withTransportationCount")
-    public ResponseEntity<List<DriverWithCountDto>> getAllDriversWithTransportationCount() {
-        List<DriverWithCountDto> drivers = driverService.getAllDriversWithTransportationCount();
+    @GetMapping("/with-statistics")
+    public ResponseEntity<List<DriverWithInfoDto>> getAllDriversWithStatistics() {
+        List<DriverWithInfoDto> drivers = driverService.getAllDriversWithStatistics();
         return ResponseEntity.ok(drivers);
     }
 }

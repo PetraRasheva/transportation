@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/client")
 public class ClientController {
@@ -40,9 +42,15 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/hasDebts")
-    public ResponseEntity<Boolean> hasDebts(@PathVariable("id") Integer clientId) {
-        boolean hasDebts = clientService.hasClientDebts(clientId);
+    @GetMapping("/all")
+    public ResponseEntity<List<ClientDto>> getAllClients() {
+        List<ClientDto> clients = clientService.getAllClients();
+        return ResponseEntity.ok(clients);
+    }
+
+    @GetMapping("/{id}/has-debts")
+    public ResponseEntity<Boolean> hasDebts(@PathVariable("id") Integer id) {
+        boolean hasDebts = clientService.hasClientDebts(id);
         return new ResponseEntity<>(hasDebts, HttpStatus.OK);
     }
 }

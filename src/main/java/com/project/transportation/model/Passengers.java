@@ -2,8 +2,6 @@ package com.project.transportation.model;
 
 import jakarta.persistence.Entity;
 
-import java.io.Serializable;
-
 @Entity
 public class Passengers extends Transportable {
     private int count;

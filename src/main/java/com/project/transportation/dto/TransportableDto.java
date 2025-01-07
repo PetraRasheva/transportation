@@ -1,22 +1,17 @@
 package com.project.transportation.dto;
 
-public abstract class TransportableDto {
-    private String name;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-    public TransportableDto() {
-        // Default constructor for frameworks like Jackson
-    }
-
-    public TransportableDto(String name) {
-        this.name = name;
-    }
-
-    // Getter and Setter
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXTERNAL_PROPERTY,
+        property = "type" // This will be the key in the JSON that holds the type information
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = GoodsDto.class, name = "goods"),
+        @JsonSubTypes.Type(value = PassengersDto.class, name = "passengers")
+})
+public sealed interface TransportableDto permits GoodsDto, PassengersDto {
+    String name();
 }

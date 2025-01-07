@@ -4,9 +4,12 @@ import com.project.transportation.dto.CompanyDto;
 import com.project.transportation.exception.CompanyNotFoundException;
 import com.project.transportation.mapper.CompanyMapper;
 import com.project.transportation.model.Company;
+import com.project.transportation.model.Transportation;
 import com.project.transportation.repository.CompanyRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +44,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional
     public void deleteCompany(Integer id) {
         companyRepository.deleteCompanyById(id);
     }
@@ -57,12 +61,25 @@ public class CompanyServiceImpl implements CompanyService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public double getCompanyIncomeByDateRange(Integer id, LocalDateTime startDate, LocalDateTime endDate) {
+        // Fetch the company by ID, including its transportations
+        Company company = companyRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Company not found"));
+
+        // Calculate the total income of the transportations
+        return company.getTransportations().stream()
+                .filter(t -> t.isPaid())  // Only include paid transportations
+                .filter(t -> !t.getStartDate().isBefore(startDate) && !t.getStartDate().isAfter(endDate))  // Filter by date range (startDate only)
+                .mapToDouble(Transportation::getPrice)
+                .sum();
+    }
+
     // Get companies filtered by income range
     public List<CompanyDto> getCompaniesByIncomeRange(double minIncome, double maxIncome) {
-        List<Company> companies = companyRepository.findByIncomeRange(minIncome, maxIncome); // Ensure this method exists
+        List<Company> companies = companyRepository.findByIncomeRange(minIncome, maxIncome);
         return companies.stream()
                 .map(companyMapper::toDto) // Convert each Company to CompanyDto
                 .collect(Collectors.toList());
     }
-
 }

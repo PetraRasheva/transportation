@@ -1,21 +1,14 @@
 package com.project.transportation.service;
 
-import com.project.transportation.cache.QualificationCache;
 import com.project.transportation.dto.DriverDto;
-import com.project.transportation.dto.DriverWithCountDto;
+import com.project.transportation.dto.DriverWithInfoDto;
 import com.project.transportation.exception.CompanyNotFoundException;
 import com.project.transportation.exception.DriverNotFoundException;
 import com.project.transportation.exception.QualificationNotFoundException;
 import com.project.transportation.exception.VehicleNotFoundException;
 import com.project.transportation.mapper.DriverMapper;
-import com.project.transportation.model.Company;
-import com.project.transportation.model.Driver;
-import com.project.transportation.model.Qualification;
-import com.project.transportation.model.Vehicle;
-import com.project.transportation.repository.CompanyRepository;
-import com.project.transportation.repository.DriverRepository;
-import com.project.transportation.repository.QualificationRepository;
-import com.project.transportation.repository.VehicleRepository;
+import com.project.transportation.model.*;
+import com.project.transportation.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,16 +25,18 @@ public class DriverServiceImpl implements DriverService {
     private final DriverMapper driverMapper;
     private final CompanyRepository companyRepository;
     private final QualificationRepository qualificationRepository;
+    private final TransportationRepository transportationRepository;
     //private final QualificationService qualificationService;
 
     @Autowired
     public DriverServiceImpl(DriverRepository driverRepository, VehicleRepository vehicleRepository,
-                             DriverMapper driverMapper, CompanyRepository companyRepository, QualificationRepository qualificationRepository) {
+                             DriverMapper driverMapper, CompanyRepository companyRepository, QualificationRepository qualificationRepository, TransportationRepository transportationRepository) {
         this.driverRepository = driverRepository;
         this.vehicleRepository = vehicleRepository;
         this.driverMapper = driverMapper;
         this.companyRepository = companyRepository;
         this.qualificationRepository = qualificationRepository;
+        this.transportationRepository = transportationRepository;
     }
 
     @Override
@@ -114,25 +109,38 @@ public class DriverServiceImpl implements DriverService {
         return driverMapper.toDto(updatedDriver);
     }
 
-    public List<DriverWithCountDto> getAllDriversWithTransportationCount() {
+    public List<DriverWithInfoDto> getAllDriversWithStatistics() {
         List<Driver> drivers = driverRepository.findAll();
 
         // Map the list of drivers to a list of DriverWithCountDto
         return drivers.stream()
-                .map(driver -> new DriverWithCountDto(
+                .map(driver -> new DriverWithInfoDto(
                         driver.getId(),
                         driver.getName(),
-                        driver.getTransportations().size() // Calculate size of transportations set
+                        driver.getTransportations().size(), // Calculate size of transportations set
+                        calculateDriverIncome(driver.getTransportations())
                 ))
                 .collect(Collectors.toList());
     }
 
+    private double calculateDriverIncome(Set<Transportation> transportations) {
+        return transportations.stream()
+                .mapToDouble(Transportation::getPrice)  // Get the price of each transportation
+                .sum();
+    }
+
     @Override
     public void deleteDriver(Integer id) {
-        if (!driverRepository.existsById(id)) {
-            throw new DriverNotFoundException("Driver not found for id: " + id);
-        }
-        driverRepository.deleteById(id);
+        Driver driver = driverRepository.findById(id)
+                .orElseThrow(() -> new DriverNotFoundException("Driver not found"));
+
+        // Remove the driver reference from all related transportations
+        driver.getTransportations().forEach(transportation -> {
+            transportation.setDriver(null);  // Ensure driver reference is null
+            transportationRepository.save(transportation);  // Persist the changes
+        });
+
+        driverRepository.delete(driver);
     }
 
     @Override

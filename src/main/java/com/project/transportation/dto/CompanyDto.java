@@ -1,4 +1,10 @@
 package com.project.transportation.dto;
 
-public record CompanyDto(Integer id, String name, Double income) {
-}
+import jakarta.validation.constraints.NotBlank;
+
+public record CompanyDto(
+        Integer id,
+        @NotBlank(message = "Name is required")
+        String name,
+        Double income
+) {}
