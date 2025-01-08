@@ -14,7 +14,7 @@ public class Transportation extends BaseEntity implements Serializable {
     private double price;
     private boolean isPaid;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL)
     private Transportable transportable;
 
     @ManyToOne(fetch = FetchType.LAZY)

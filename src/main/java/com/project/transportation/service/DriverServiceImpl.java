@@ -26,7 +26,6 @@ public class DriverServiceImpl implements DriverService {
     private final CompanyRepository companyRepository;
     private final QualificationRepository qualificationRepository;
     private final TransportationRepository transportationRepository;
-    //private final QualificationService qualificationService;
 
     @Autowired
     public DriverServiceImpl(DriverRepository driverRepository, VehicleRepository vehicleRepository,
@@ -59,9 +58,6 @@ public class DriverServiceImpl implements DriverService {
                     .orElseThrow(() -> new VehicleNotFoundException("Vehicle not found"));
             driver.setVehicle(vehicle);
         }
-
-        // Handle qualifications
-        //updateDriverQualifications(driver, driverDto.getQualificationIds());
 
         Driver savedDriver = driverRepository.save(driver);
         return driverMapper.toDto(savedDriver);

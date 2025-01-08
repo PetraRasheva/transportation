@@ -1,0 +1,9 @@
+Transportation {
+ ID: 11,
+ Start Destination: Boston,
+ End Destination: New York,
+ Start Date: 2022-12-11T08:00,
+ End Date: Not delivered,
+ Price: 2010.0,
+ Transportable: Goods { Name: Product Y, Weight: 100.5, Price Per Kg: 20.0 },
+ Company: Speedy}

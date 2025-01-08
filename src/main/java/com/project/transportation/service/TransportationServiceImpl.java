@@ -87,8 +87,9 @@ public class TransportationServiceImpl implements TransportationService {
     }
 
     @Override
+    @Transactional
     public void deleteTransportation(Integer id) {
-
+        transportationRepository.deleteById(id);
     }
 
     @Override

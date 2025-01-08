@@ -3,6 +3,7 @@ package com.project.transportation.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,6 +19,14 @@ public class Company extends BaseEntity {
 
     @OneToMany(mappedBy = "company")
     private Set<Vehicle> vehicles;
+
+    public Company(String name, double income) {
+        this.name = name;
+        this.income = income;
+    }
+
+    public Company() {
+    }
 
     public String getName() {
         return name;
